@@ -194,7 +194,9 @@ export const mercanciaSchema = z
         .nonnegative({ error: "El valor de la mercancía no puede ser negativo" })
         .optional(),
     ),
-    moneda: z.preprocess((v) => emptyToUndefined(cleanUpper(v)) ?? "MXN", z.string().length(3)),
+    moneda: z
+      .preprocess((v) => emptyToUndefined(cleanUpper(v)) ?? "MXN", z.string().length(3))
+      .optional(),
     materialPeligroso: z.preprocess(emptyToUndefined, materialPeligrosoFlagSchema.optional()),
     cveMaterialPeligroso: optUpper(),
     embalaje: optUpper(),
