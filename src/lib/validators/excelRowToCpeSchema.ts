@@ -49,6 +49,23 @@ export function mapRowToSchema(row: RawExcelRow): KeyedRow {
   return keyed;
 }
 
+/**
+ * Escribe `value` bajo la key dada en una fila cruda, reusando el header
+ * original de esa fila si ya lo tenía (tolera aliases); si no, usa el header
+ * canónico de la plantilla. Contraparte de escritura de `mapRowToSchema`,
+ * para que el editor de errores pueda corregir `raw_data` sin perder el resto
+ * de las columnas ni duplicar headers.
+ */
+export function setPlantillaValue(row: RawExcelRow, key: PlantillaKey, value: string): RawExcelRow {
+  const updated: RawExcelRow = { ...row };
+  const existingHeader = Object.keys(row).find(
+    (header) => HEADER_TO_KEY.get(normalizeHeader(header)) === key,
+  );
+  const targetHeader = existingHeader ?? COLUMN_BY_KEY.get(key)?.header ?? key;
+  updated[targetHeader] = value;
+  return updated;
+}
+
 /** Agrupa filas por `Folio`. Filas sin folio caen en el grupo `""`. */
 export function groupByFolio(rows: { rowNumber: number; data: RawExcelRow }[]): FolioGroup[] {
   const groups = new Map<string, FolioGroup>();
@@ -144,6 +161,7 @@ export function assembleFolioGroup(group: FolioGroup): {
       receptor: {
         rfc: g("receptorRfc") ?? "",
         nombre: g("receptorNombre") ?? "",
+        email: g("receptorEmail") ?? "",
         domicilioFiscalReceptor: g("receptorCpFiscal") ?? "",
         regimenFiscalReceptor: g("receptorRegimen") ?? "",
         usoCFDI: g("usoCfdi") ?? "",

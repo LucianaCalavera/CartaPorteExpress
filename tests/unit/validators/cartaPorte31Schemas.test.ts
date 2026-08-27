@@ -247,6 +247,7 @@ describe("comprobanteIngresoSchema", () => {
     receptor: {
       rfc: "MOR190101AB1",
       nombre: "Cliente Demo",
+      email: "cliente@demo.mx",
       domicilioFiscalReceptor: "64000",
       regimenFiscalReceptor: "601",
       usoCFDI: "G03",

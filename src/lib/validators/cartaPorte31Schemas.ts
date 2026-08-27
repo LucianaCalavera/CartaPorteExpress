@@ -140,6 +140,18 @@ export const paisSchema = z.preprocess(
   z.string().regex(/^[A-Z]{3}$/, { error: "Clave de país inválida (ISO alfa-3)" }),
 );
 
+/**
+ * Email del cliente. No lo pide el CFDI/Carta Porte del SAT, pero Factura.com
+ * lo exige para registrar al receptor como cliente antes de timbrar (ver
+ * `lib/pac/pacMapper.ts`).
+ */
+export const emailSchema = z.preprocess(
+  cleanString,
+  z.string({ error: "El email del cliente es obligatorio" }).email({
+    error: "El email del cliente tiene un formato inválido",
+  }),
+);
+
 // ---------------------------------------------------------------------------
 // Domicilio
 // ---------------------------------------------------------------------------
@@ -393,6 +405,7 @@ export type CartaPorte31 = z.infer<typeof cartaPorte31Schema>;
 export const receptorSchema = z.object({
   rfc: rfcSchema,
   nombre: reqString("El nombre o razón social del receptor es obligatorio"),
+  email: emailSchema,
   domicilioFiscalReceptor: codigoPostalSchema,
   regimenFiscalReceptor: reqUpper("El régimen fiscal del receptor es obligatorio"),
   usoCFDI: reqUpper("El uso de CFDI es obligatorio"),

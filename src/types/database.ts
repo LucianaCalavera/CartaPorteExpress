@@ -36,6 +36,7 @@ export type Database = {
       filas_proceso: {
         Row: {
           created_at: string | null;
+          folio: string;
           id: string;
           idempotency_key: string | null;
           last_pac_response: Json | null;
@@ -43,6 +44,7 @@ export type Database = {
           proceso_id: string;
           raw_data: Json;
           row_number: number;
+          row_numbers: number[];
           sat_status: string | null;
           status: string | null;
           updated_at: string | null;
@@ -53,6 +55,7 @@ export type Database = {
         };
         Insert: {
           created_at?: string | null;
+          folio?: string;
           id?: string;
           idempotency_key?: string | null;
           last_pac_response?: Json | null;
@@ -60,6 +63,7 @@ export type Database = {
           proceso_id: string;
           raw_data: Json;
           row_number: number;
+          row_numbers?: number[];
           sat_status?: string | null;
           status?: string | null;
           updated_at?: string | null;
@@ -70,6 +74,7 @@ export type Database = {
         };
         Update: {
           created_at?: string | null;
+          folio?: string;
           id?: string;
           idempotency_key?: string | null;
           last_pac_response?: Json | null;
@@ -77,6 +82,7 @@ export type Database = {
           proceso_id?: string;
           raw_data?: Json;
           row_number?: number;
+          row_numbers?: number[];
           sat_status?: string | null;
           status?: string | null;
           updated_at?: string | null;

@@ -13,6 +13,7 @@ export const VALID_ROW: Readonly<RawExcelRow> = {
   Moneda: "MXN",
   "RFC Cliente": "MOR190101AB1",
   "Nombre Cliente": "Cliente Demo SA de CV",
+  "Email Cliente": "cliente@demo.mx",
   "CP Fiscal Cliente": "64000",
   "Regimen Fiscal Cliente": "601",
   "Uso CFDI": "G03",

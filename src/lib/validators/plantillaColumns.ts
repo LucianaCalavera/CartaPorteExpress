@@ -69,6 +69,14 @@ export const PLANTILLA_COLUMNAS_MAP = [
     required: true,
   },
   {
+    key: "receptorEmail",
+    header: "Email Cliente",
+    aliases: ["Correo Cliente", "Correo Electronico Cliente"],
+    scope: "trip",
+    required: true,
+    hint: "Se usa para registrar al cliente en el PAC antes de timbrar",
+  },
+  {
     key: "receptorCpFiscal",
     header: "CP Fiscal Cliente",
     aliases: ["Codigo Postal Cliente"],
