@@ -30,7 +30,7 @@ create table public.profiles (
 
 -- 2. Procesos de Carga (Batch)
 create table public.procesos (
-    id uuid primary key default uuid_generate_v4(),
+    id uuid primary key default gen_random_uuid(),
     user_id uuid not null references auth.users on delete cascade,
     original_filename text,
     total_rows int default 0,
@@ -47,14 +47,14 @@ create index idx_procesos_user_created on public.procesos (user_id, created_at d
 
 -- 3. Filas Individuales (el grano fino)
 create table public.filas_proceso (
-    id uuid primary key default uuid_generate_v4(),
+    id uuid primary key default gen_random_uuid(),
     proceso_id uuid not null references public.procesos on delete cascade,
     row_number int not null,
     raw_data jsonb not null,
     validated_data jsonb,
     validation_errors jsonb,
     status text default 'pending', -- 'pending'|'valid'|'invalid'|'stamping'|'stamped'|'failed'|'cancelled'
-    idempotency_key uuid default uuid_generate_v4(), -- Previene doble-timbrado (Regla de Oro #3)
+    idempotency_key uuid default gen_random_uuid(), -- Previene doble-timbrado (Regla de Oro #3)
     uuid_timbre text,
     xml_url text,
     pdf_url text,
@@ -68,7 +68,7 @@ create index idx_filas_proceso_status on public.filas_proceso (proceso_id, statu
 
 -- Leads capturados en Landing (lead magnet)
 create table public.leads (
-    id uuid primary key default uuid_generate_v4(),
+    id uuid primary key default gen_random_uuid(),
     email text not null,
     source text default 'landing',
     created_at timestamptz default now()
