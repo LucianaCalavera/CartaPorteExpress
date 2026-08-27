@@ -101,6 +101,22 @@ export const claveUnidadSchema = z.preprocess(
   }),
 );
 
+/** Verifica que la cadena represente una fecha-hora real (sin overflow de calendario). */
+function isRealDateTime(s: string): boolean {
+  const m = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})$/.exec(s);
+  if (!m) return false;
+  const [y, mo, d, h, mi, sec] = m.slice(1).map(Number);
+  const dt = new Date(y, mo - 1, d, h, mi, sec);
+  return (
+    dt.getFullYear() === y &&
+    dt.getMonth() === mo - 1 &&
+    dt.getDate() === d &&
+    dt.getHours() === h &&
+    dt.getMinutes() === mi &&
+    dt.getSeconds() === sec
+  );
+}
+
 /** Fecha-hora SAT sin zona: `YYYY-MM-DDTHH:MM:SS`. */
 export const fechaHoraSatSchema = z.preprocess(
   cleanString,
@@ -109,7 +125,7 @@ export const fechaHoraSatSchema = z.preprocess(
     .regex(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/, {
       error: "Formato de fecha inválido (se espera AAAA-MM-DDTHH:MM:SS)",
     })
-    .refine((s) => !Number.isNaN(Date.parse(s)), { error: "La fecha no existe en el calendario" }),
+    .refine(isRealDateTime, { error: "La fecha no existe en el calendario" }),
 );
 
 export const estadoSchema = z.preprocess(

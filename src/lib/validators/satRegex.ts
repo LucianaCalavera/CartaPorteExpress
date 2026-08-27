@@ -4,8 +4,12 @@
  * `validationEngine` con el índice de catálogos inyectado.
  */
 
-/** RFC persona moral (3 letras) o física (4 letras) + fecha + homoclave. */
-export const RFC_REGEX = /^([A-ZÑ&]{3,4})\d{6}([A-Z\d]{2})([A\d])$/;
+/**
+ * RFC persona moral (3 letras) o física (4 letras) + fecha (AAMMDD) + homoclave
+ * de 3 caracteres. La homoclave se valida sólo por forma; el dígito verificador
+ * lo confirma el PAC (Regla de Oro #2).
+ */
+export const RFC_REGEX = /^([A-ZÑ&]{3,4})\d{6}[A-Z\d]{2}[0-9A]$/;
 
 /** RFC genérico nacional (público en general). */
 export const RFC_GENERICO_NACIONAL = "XAXX010101000";
