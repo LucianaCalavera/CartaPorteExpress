@@ -15,8 +15,8 @@
     "db:start": "supabase start",
     "db:push": "supabase db push",
     "db:studio": "supabase status",
-    "db:types": "supabase gen types typescript --local > src/types/database.ts",
-    "catalogs:sync": "tsx src/scripts/sync-catalogs-sat.ts",
+    "db:types": "supabase gen types typescript --linked > src/types/database.ts",
+    "catalogs:sync": "tsx --env-file=.env.local src/scripts/sync-catalogs-sat.ts",
     "prepare": "husky"
   },
   "lint-staged": {
@@ -56,7 +56,7 @@
     "@tailwindcss/postcss": "^4.3.3",
     "@testing-library/jest-dom": "^7.0.1",
     "@testing-library/react": "^16.3.2",
-    "@types/node": "^20",
+    "@types/node": "^24.13.3",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@vitejs/plugin-react": "^4.7.0",
@@ -72,6 +72,7 @@
     "tailwindcss": "^4.3.3",
     "tsx": "^4.23.12",
     "typescript": "^5",
+    "unbzip2-stream": "^1.4.3",
     "vite-tsconfig-paths": "^6.1.1",
     "vitest": "^4.1.11"
   }

@@ -3,3 +3,7 @@ node_modules
 coverage
 package-lock.json
 CLAUDE.md
+
+# Catálogos SAT generados por scripts/sync-catalogs-sat.ts
+src/lib/constants/*.generated.ts
+src/lib/constants/*.generated.json
