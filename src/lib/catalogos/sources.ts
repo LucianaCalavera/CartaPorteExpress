@@ -90,11 +90,28 @@ export function buildBigCatalogSources(version: string): BigCatalogSource[] {
       },
     },
     {
+      // Concepto del CFDI: servicio de flete. Usa el catálogo COMPLETO
+      // c_ClaveProdServ (p. ej. 78101800 "Transporte de carga por carretera").
       catalogoType: "clave_prod_serv",
-      // Catálogo de bienes transportados de Carta Porte 3.1. La columna
+      query: `
+        SELECT id, texto, complemento, vigencia_desde, vigencia_hasta
+        FROM cfdi_40_productos_servicios
+      `,
+      toRecord: (row) => ({
+        code: String(row.id),
+        description: String(row.texto ?? "").trim() || String(row.id),
+        parent_code: null,
+        valid_from: startDate(row.vigencia_desde, version),
+        valid_to: endDate(row.vigencia_hasta),
+        attributes: { complemento: String(row.complemento ?? "").trim() || null },
+      }),
+    },
+    {
+      // Mercancía transportada: Mercancia/@BienesTransp. Usa el catálogo
+      // ESPECÍFICO de Carta Porte (c_ClaveProdServCP). La columna
       // `material_peligroso` es un set separado por comas de valores permitidos
-      // para el campo MaterialPeligroso: '0' (sólo "No"), '1' (sólo "Sí"),
-      // '0,1' (opcional).
+      // para MaterialPeligroso: '0' (sólo "No"), '1' (sólo "Sí"), '0,1' (opcional).
+      catalogoType: "clave_prod_serv_cp",
       query: `
         SELECT id, texto, material_peligroso, vigencia_desde, vigencia_hasta
         FROM ccp_31_productos_servicios
@@ -111,10 +128,12 @@ export function buildBigCatalogSources(version: string): BigCatalogSource[] {
       }),
     },
     {
+      // c_ClaveUnidad completo (Mercancia/@ClaveUnidad y Concepto/@ClaveUnidad;
+      // p. ej. H87 "Pieza", E48 "Unidad de servicio", KGM).
       catalogoType: "unidad",
       query: `
-        SELECT id, texto, simbolo, nota, vigencia_desde, vigencia_hasta
-        FROM ccp_31_claves_unidades
+        SELECT id, texto, simbolo, notas, vigencia_desde, vigencia_hasta
+        FROM cfdi_40_claves_unidades
       `,
       toRecord: (row) => ({
         code: String(row.id),
@@ -124,7 +143,7 @@ export function buildBigCatalogSources(version: string): BigCatalogSource[] {
         valid_to: endDate(row.vigencia_hasta),
         attributes: {
           simbolo: String(row.simbolo ?? "").trim() || null,
-          nota: String(row.nota ?? "").trim() || null,
+          nota: String(row.notas ?? "").trim() || null,
         },
       }),
     },

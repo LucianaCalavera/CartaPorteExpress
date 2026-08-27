@@ -38,9 +38,13 @@ export const ANIO_MODELO_MAX = new Date().getFullYear() + 2;
 /** Peso mínimo significativo en kg (evita PesoBruto = 0). */
 export const PESO_KG_MIN = 0.001;
 
-/** Un CFDI de Carta Porte no puede timbrarse con fecha muy anterior/posterior. */
+/**
+ * Ventana válida para `FechaHoraSalidaLlegada` del Origen respecto a la fecha
+ * de referencia (hoy). El SAT tolera timbrar con algo de atraso, pero no fechas
+ * lejanas ni muy adelantadas.
+ */
 export const CFDI_FECHA_MAX_DIAS_PASADO = 3;
-export const CFDI_FECHA_MAX_HORAS_FUTURO = 24;
+export const CFDI_FECHA_MAX_DIAS_FUTURO = 30;
 
 /** Normaliza a mayúsculas y sin espacios extremos (RFC, CP, placa, claves). */
 export function upperTrim(value: unknown): unknown {
